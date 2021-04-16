@@ -12,7 +12,7 @@ pipeline
                 script{
                     
                        
-                        sh "sudo docker build -t flask-app:"$BUILD_NUMBER" ."
+                        sh "sudo docker build -t flask-app ."
                     }
                 }
             
