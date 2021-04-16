@@ -1,6 +1,6 @@
-FROM python:alpine3.7
-COPY Project_Demo.py /app
-EXPOSE 8080
+FROM python:3.6
+COPY .  /flask_project
+WORKDIR /flask_project
 RUN pip install -r requirements.txt
-ENTRYPOINT [ "python" ]
-CMD [ "Project_Demo.py" ]
+EXPOSE  8000
+CMD ["python", "src/Project_Demo.py"]
