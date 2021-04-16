@@ -1,34 +1,22 @@
-pipeline
-{
-    environment {
-        registry = "localhost:7000"
-        appName = "app2"
-        appPort = "5679"
-        dockerImage = ""
-        dockerImageName = ""
-    }
-    agent any
-    stages {
-        stage('BUILD docker image') {
-            steps {
-                script{
-                    dir("Project_Demo") {
-                        sh "pwd"
-                        dockerImageName = registry + "/" +appName+ ":$BUILD_NUMBER"
-                        dockerImage = docker.build dockerImageName
-                    }
-                }
-            }
-        }
-        
-        stage("DEPLOY docker image"){
-            steps {
-            echo "!.....Now Deploying.....!"+ dockerImageName
-            script {
-                sh "docker rm "+appName+" --force"
-                 sh "sudo docker run -p 8000:8000 --name flask-app -d flask-app "
-                }
-            }
-        }
+node {
+   stage('Get Source') {
+      if (!fileExists("Dockerfile")) {
+         error('Dockerfile missing.............')
+      }
+   }
+    
+    
+    
+   stage('Build Docker') {
+         sh "sudo docker build -t flask-app ."
+       echo "Image bhild successfully........!!!"
+   }
+    
+    
+    
+    
+   stage("run docker container"){
+        sh "sudo docker run -p 8000:8000 --name flask-app -d flask-app "
+       echo "Run docker Container.............!!!"
     }
 }
