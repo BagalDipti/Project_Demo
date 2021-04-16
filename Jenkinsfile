@@ -26,7 +26,7 @@ pipeline
             echo "!.....Now Deploying.....!"+ dockerImageName
             script {
                 sh "docker rm "+appName+" --force"
-                sh "docker run --name "+appName+" -d -p "+appPort+":5678" -e build=$BUILD_NUMBER "+dockerImageName
+                 sh "sudo docker run -p 8000:8000 --name flask-app -d flask-app "
                 }
             }
         }
