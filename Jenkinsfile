@@ -12,25 +12,13 @@ pipeline
         stage('BUILD docker image') {
             steps {
                 script{
-                    dir("Project_Demo") {
-                        sh "pwd"
-                        dockerImageName = registry + "/" +appName+ ":$BUILD_NUMBER"
-                        dockerImage = docker.build dockerImageName
-                    }
+                    
+                      sh "sudo docker build -t flask-app ."$BUILD_NUMBER"
+                    
                 }
             }
         }
-        stage("PUSH image to registry"){
-            steps {
-                echo "Pushing Image:- "+ dockerImageName
-                script {
-                    docker.withRegistry('') {
-                            dockerImage.push()
-                    }
-                }
-                echo "Image Pushed Successfully"
-            }
-        }
+       
         stage("DEPLOY docker image"){
             steps {
             echo "!.....Now Deploying.....!"+ dockerImageName
