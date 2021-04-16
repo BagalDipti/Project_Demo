@@ -1,14 +1,34 @@
-node {
-   stage('Get Source') {
-      git ('https://github.com/BagalDipti/Project_Demo.git')
-      if (!fileExists("Dockerfile")) {
-         error('Dockerfile missing.')
-      }
-   }
-   stage('Build Docker') {
-         sh "sudo docker build -t flask-app ."
-   }
-   stage("run docker container"){
-        sh "sudo docker run -p 8000:8000 --name flask-app -d flask-app "
+pipeline
+{
+    environment {
+        registry = "localhost:7000"
+        appName = "app2"
+        appPort = "5679"
+        dockerImage = ""
+        dockerImageName = ""
+    }
+    agent any
+    stages {
+        stage('BUILD docker image') {
+            steps {
+                script{
+                    dir("Project_Demo") {
+                        sh "pwd"
+                        dockerImageName = registry + "/" +appName+ ":$BUILD_NUMBER"
+                        dockerImage = docker.build dockerImageName
+                    }
+                }
+            }
+        }
+        
+        stage("DEPLOY docker image"){
+            steps {
+            echo "!.....Now Deploying.....!"+ dockerImageName
+            script {
+                sh "docker rm "+appName+" --force"
+                sh "docker run --name "+appName+" -d -p "+appPort+":5678" -e build=$BUILD_NUMBER "+dockerImageName
+                }
+            }
+        }
     }
 }
