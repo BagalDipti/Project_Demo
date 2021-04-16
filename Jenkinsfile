@@ -37,6 +37,7 @@ pipeline
             script {
                 sh "docker rm "+appName+" --force"
                 sh "docker run --name "+appName+" -d -p "+appPort+":5678" -e build=$BUILD_NUMBER "+dockerImageName
+            }
                 }
             }
         }
