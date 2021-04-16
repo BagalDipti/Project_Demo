@@ -58,19 +58,6 @@ def delete_employee(name):
             return jsonify({'message' : 'deleted employee {}'.format(name)})
     return jsonify({'Alert' : 'Sorry, No employee found'})
 
-#update-
-@app.route('/employee/<string:name>', methods=['POST'])
-def update_employee(name):
-    data = request.get()
-    for employee in employees:
-
-        if employee['name'] == name:
-            employees.update('name', 'employee_id','skills')
-
-            return jsonify({'message' : 'updated employee {}'.format(employee)})
-
-
-
 
 
 
@@ -86,24 +73,6 @@ def add_employee():
     employees.append(new_employee)
     return jsonify({'Messgae' : 'New Employee Successfully Added..!!'})
 
-
-#for Delete
-@app.route('/employee/<int:employee_id>', methods=['DELETE'])
-def del_emp(employee_id):
-    global employees
-    i=0
-    delete= False
-
-    for employee in employees:
-        if employee['employee_id']==employee_id:
-            employee.pop(i)
-            delete=True
-        i+=1
-
-        if delete:
-            return Response("", status=204, mimetype='application/json')
-        else:
-            return Response("", status=400, mimetype='application/json')
 
 
 
