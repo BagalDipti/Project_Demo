@@ -2,8 +2,6 @@ pipeline
 {
     environment {
         registry = "localhost:7000"
-        appName = "app2"
-        appPort = "5679"
         dockerImage = ""
         dockerImageName = ""
     }
@@ -12,31 +10,19 @@ pipeline
         stage('BUILD docker image') {
             steps {
                 script{
-                    dir("Project_Demo") {
-                        sh "pwd"
-                        dockerImageName = registry + "/" +appName+ ":$BUILD_NUMBER"
-                        dockerImage = docker.build dockerImageName
+                    
+                       
+                        sh "sudo docker build -t flask-app:"$BUILD_NUMBER" ."
                     }
                 }
             }
         }
-        stage("PUSH image to registry"){
+        
+        stage("run docker container"){
             steps {
-                echo "Pushing Image:- "+ dockerImageName
-                script {
-                    docker.withRegistry('') {
-                            dockerImage.push()
-                    }
-                }
-                echo "Image Pushed Successfully"
-            }
-        }
-        stage("DEPLOY docker image"){
-            steps {
-            echo "!.....Now Deploying.....!"+ dockerImageName
+            echo "!.....Run Docker Container....!!!
             script {
-                sh "docker rm "+appName+" --force"
-                sh "docker run --name "+appName+" -d -p "+appPort+":5678" -e build=$BUILD_NUMBER "+dockerImageName
+                 sh "sudo docker run -p 8000:8000 --name flask-app -d flask-app "
                 }
             }
         }
