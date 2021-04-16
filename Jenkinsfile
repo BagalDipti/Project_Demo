@@ -15,7 +15,7 @@ pipeline
                         sh "sudo docker build -t flask-app:"$BUILD_NUMBER" ."
                     }
                 }
-            }
+            
         }
         
         stage("run docker container"){
