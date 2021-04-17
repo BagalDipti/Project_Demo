@@ -26,7 +26,7 @@ pipeline {
             steps {
             echo "!.....Now Deploying.....!"+ dockerImage
             script {
-                sh "docker run --name "+appName+" -d -p "+appPort+":4757" "+dockerImageName
+                sh "docker run --name "+appName+" -d -p "+appPort+":4757" "+dockerImage
                 }
             }
  
