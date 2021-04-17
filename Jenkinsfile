@@ -1,46 +1,35 @@
 pipeline {
   environment {
-            registry = "diptibagal3010/basic"
-            imagename = "my_image"
-            dockerImage = ''
-  } 
-
+    registry = "diptibagal3010/basic"
+    dockerImage = ''
+  }
   agent any
   stages {
     stage('Cloning Git') {
       steps {
-                checkout scm
-
+        git 'https://github.com/gustavoapolinario/microservices-node-example-todo-frontend.git'
       }
     }
     stage('Building image') {
       steps{
         script {
-          dockerImage = docker.build imagename
+          dockerImage = docker.build registry + ":$BUILD_NUMBER"
         }
       }
     }
-   
- stage('Deploy Image') {
+    stage('Deploy Image') {
       steps{
         script {
-          docker.withRegistry('') {
+          docker.withRegistry( '' ) {
             dockerImage.push()
           }
         }
       }
     }
-    stage('Remove Unused docker image - Master') {
-      when {
-      anyOf {
-            branch 'master'
-      }
-     }
+    stage('Remove Unused docker image') {
       steps{
-        sh "docker rmi $imagename:$BUILD_NUMBER"
-         sh "docker rmi $imagename:latest"
-
+        sh "docker rmi $registry:$BUILD_NUMBER"
       }
-    } // End of remove unused docker image for master
-  }  
-} //end of pipeline
+    }
+  }
+}
