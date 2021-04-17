@@ -1,6 +1,6 @@
 pipeline {
   environment {
-            registry = "localhost:7000"
+            registry = "diptibagal3010/basic"
             imagename = "my_image"
             dockerImage = ''
   } 
