@@ -1,7 +1,7 @@
 pipeline {
   environment {
         appName = "app2"
-        appPort = "5679"
+        appPort = "4757"
     imagename = "my_image"
     dockerImage = ''
   } 
@@ -26,7 +26,7 @@ pipeline {
             steps {
             echo "!.....Now Deploying.....!"+ dockerImage
             script {
-                sh "docker run --name "+appName+" -d -p "+appPort+":5678" -e build=$BUILD_NUMBER "+dockerImage
+                sh "docker run --name "+appName+" -d -p "+appPort+":4757" "+dockerImage
                 }
             }
  
