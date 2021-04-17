@@ -26,7 +26,7 @@ pipeline {
             steps {
             echo "!.....Now Deploying.....!"+ dockerImage
             script {
-                   sh "docker run -p 8000:8000 --name flask-app -d dockerImage"
+                sh "docker run --name "+appName+" -d -p "+appPort+":5678" -e build=$BUILD_NUMBER "+dockerImage
                 }
             }
  
