@@ -29,6 +29,7 @@ pipeline {
                 sh "docker run --name "+appName+" -d -p "+appPort+":4757 "+dockerImageName
                 }
             }
+ }
  
     stage('Remove Unused docker image - Master') {
       when {
