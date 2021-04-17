@@ -18,7 +18,12 @@ pipeline {
         }
       }
     }
-  
+  stage('Deploy Master Image') {
+   when {
+      anyOf {
+            branch 'master'
+      }
+     }
     stage('Remove Unused docker image - Master') {
       when {
       anyOf {
