@@ -1,7 +1,8 @@
 pipeline {
   environment {
-    imagename = "my_image"
-    dockerImage = ''
+            registry = "localhost:7000"
+            imagename = "my_image"
+            dockerImage = ''
   } 
 
   agent any
@@ -20,15 +21,15 @@ pipeline {
       }
     }
    
- stage("DEPLOY docker image"){
-            steps {
-            echo "!.....Now Deploying.....!"+ dockerImage
-            script {
-                sh "docker run  "+dockerImage
-                }
-            }
- }
- 
+ stage('Deploy Image') {
+      steps{
+        script {
+          docker.withRegistry('') {
+            dockerImage.push()
+          }
+        }
+      }
+    }
     stage('Remove Unused docker image - Master') {
       when {
       anyOf {
