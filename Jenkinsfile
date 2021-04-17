@@ -3,6 +3,7 @@ pipeline {
     imagename = "my_image"
     dockerImage = ''
   } 
+
   agent any
   stages {
     stage('Cloning Git') {
@@ -18,12 +19,25 @@ pipeline {
         }
       }
     }
-  stage('Deploy Master Image') {
+   
+stage('Deploy Master Image') {
    when {
       anyOf {
             branch 'master'
       }
      }
+      steps{
+        script {
+          docker.withRegistry(ecrurl, ecrcredentials) {     
+            dockerImage.push("$BUILD_NUMBER")
+             dockerImage.push('latest')
+
+          }
+        }
+      }
+    }
+
+ 
     stage('Remove Unused docker image - Master') {
       when {
       anyOf {
