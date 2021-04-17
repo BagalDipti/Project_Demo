@@ -1,5 +1,7 @@
 pipeline {
   environment {
+        appName = "app2"
+        appPort = "5679"
     imagename = "my_image"
     dockerImage = ''
   } 
@@ -20,23 +22,13 @@ pipeline {
       }
     }
    
-stage('Deploy Master Image') {
-   when {
-      anyOf {
-            branch 'master'
-      }
-     }
-      steps{
-        script {
-          docker.withRegistry(ecrurl, ecrcredentials) {     
-            dockerImage.push("$BUILD_NUMBER")
-             dockerImage.push('latest')
-
-          }
-        }
-      }
-    }
-
+ stage("DEPLOY docker image"){
+            steps {
+            echo "!.....Now Deploying.....!"+ dockerImageName
+            script {
+                sh "docker run --name "+appName+" -d -p "+appPort+":5678" -e build=$BUILD_NUMBER "+dockerImageName
+                }
+            }
  
     stage('Remove Unused docker image - Master') {
       when {
